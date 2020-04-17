@@ -9,64 +9,26 @@ import java.util.LinkedList;
  * also penalize the users .
  */
 public class Repository {
-    LinkedList<Card> hiddenCardList = new LinkedList();
     //A
+    LinkedList<Card> hiddenCardList = new LinkedList();
     LinkedList<Card> playedCardList = new LinkedList();
     private int forfeit;
-//    private int color;
-//    private int number;
-//
-//    /**
-//     * @return color of the card that we should put like that .
-//     */
-//    public int getColor() {
-//        return color;
-//    }
-//
-//    /**
-//     * @param color get color of the card that we shout put like that .
-//     */
-//    public void setColor(int color) {
-//        this.color = color;
-//    }
-//
-//    /**
-//     * @return number of the card that we should put like that
-//     */
-//    public int getNumber() {
-//        return number;
-//    }
-//
-//    /**
-//     * set number of the card that we should put like that
-//     *
-//     * @param number
-//     */
-//    public void setNumber(int number) {
-    //      this.number = number;
-    //   }
 
     public Repository(LinkedList<Card> hiddenCardList, LinkedList<Card> playedCardList) {
         this.hiddenCardList = hiddenCardList;
         this.playedCardList = playedCardList;
     }
 
-    public Repository(LinkedList<Card> hiddenCardList) {
-        this.hiddenCardList = hiddenCardList;
+    public Repository(LinkedList<Card> playedCardList) {
+        this.playedCardList = playedCardList;
     }
 
     /**
-     * use this method to know we can put this card or not .
-     * @param card card that we want to put it .
-     * @return result ( we can put this card or not )
+     * @param card new card that we put it .
      */
-    public boolean checkTheCard(Card card) {
-        return card.getColor() == playedCardList.getLast().getColor() ||
-                card.getNumber() == playedCardList.getLast().getNumber();
-    }
-
     public void addToPlayedCard(Card card) {
         playedCardList.add(card);
+        setForfeit(card);
     }
 
     /**
@@ -84,7 +46,10 @@ public class Repository {
      * @param card forfeit of this turn .
      */
     public void setForfeit(Card card) {
-        this.forfeit += card.getForfeit();
+        if (this.forfeit == 1)
+            this.forfeit = card.getForfeit();
+        if (this.forfeit > 1)
+            this.forfeit += card.getForfeit();
     }
 
     /**
@@ -114,17 +79,16 @@ public class Repository {
      * A
      * moving card from played list to hidden list .
      */
-    public void movePlayedToHidden() {
-        System.out.println("size of B : " + playedCardList.size());
-        LinkedList<Card> temp = new LinkedList();
-        temp.add(playedCardList.getLast());
-        playedCardList.removeLast();
-        // to be on the safe side   LOL !
-        hiddenCardList.clear();
-        hiddenCardList.addAll(playedCardList);
-        playedCardList.clear();
-        playedCardList.add(temp.getFirst());
-        Collections.shuffle(hiddenCardList);
-    }
+//    public void movePlayedToHidden() {
+//        LinkedList<Card> temp = new LinkedList();
+//        temp.add(playedCardList.getLast());
+//        playedCardList.removeLast();
+//        // to be on the safe side   LOL !
+//        hiddenCardList.clear();
+//        hiddenCardList.addAll(playedCardList);
+//        playedCardList.clear();
+//        playedCardList.add(temp.getFirst());
+//        Collections.shuffle(hiddenCardList);
+//    }
 
 }

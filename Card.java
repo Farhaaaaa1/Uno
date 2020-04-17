@@ -2,8 +2,8 @@ package com.company;
 
 /**
  * for colors :
- * 1 : Blue   /   2 : Red
- * 3 : Green   / 7u 4 : Yellow
+ * 1 : Blue   /   2 : Green
+ * 3 : Yellow   / 7u 4 : Red
  */
 public abstract class Card {
     private int color;
@@ -43,5 +43,12 @@ public abstract class Card {
     public Card(int color, int number) {
         this.color = color;
         this.number = number;
+    }
+
+    /**
+     * @param color color of the card .
+     */
+    void setColor(int color) {
+        this.color = color ;
     }
 }
