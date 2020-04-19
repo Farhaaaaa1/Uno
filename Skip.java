@@ -1,9 +1,8 @@
 package com.company;
 
 public interface Skip {
-    default int skip(int turn , int direction)
+    default void skip(GameSystem gameSystem)
     {
-        turn += direction ;
-        return turn ;
+        gameSystem.setTurn(gameSystem.getTurn()+gameSystem.getRotation());
     }
 }

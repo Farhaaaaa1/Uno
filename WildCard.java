@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class WildCard extends Card {
     public WildCard(int color, int number) {
-        super(color, number);
+        super(color);
     }
 
 

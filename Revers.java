@@ -1,7 +1,7 @@
 package com.company;
 
 public interface Revers {
-   default int rivers (int direction){
-        return  -direction ;
+   default void rivers (GameSystem gameSystem){
+          gameSystem.setRotation(-gameSystem.getRotation()); ;
     }
 }

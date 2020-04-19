@@ -10,14 +10,14 @@ import java.util.LinkedList;
  */
 public class Repository {
     //A
-    LinkedList<Card> hiddenCardList = new LinkedList();
+   // LinkedList<Card> hiddenCardList = new LinkedList();
     LinkedList<Card> playedCardList = new LinkedList();
     private int forfeit;
 
-    public Repository(LinkedList<Card> hiddenCardList, LinkedList<Card> playedCardList) {
-        this.hiddenCardList = hiddenCardList;
-        this.playedCardList = playedCardList;
-    }
+//    public Repository(LinkedList<Card> hiddenCardList, LinkedList<Card> playedCardList) {
+//        this.hiddenCardList = hiddenCardList;
+//        this.playedCardList = playedCardList;
+//    }
 
     public Repository(LinkedList<Card> playedCardList) {
         this.playedCardList = playedCardList;
@@ -27,13 +27,11 @@ public class Repository {
      * @param card new card that we put it .
      */
     public void addToPlayedCard(Card card) {
-        playedCardList.add(card);
+        playedCardList.addLast(card);
         setForfeit(card);
     }
-
     /**
      * get the forfeit of this turn .
-     *
      * @return forfeit of this turn .
      */
     public int getForfeit() {
@@ -41,8 +39,7 @@ public class Repository {
     }
 
     /**
-     * set the forfeit of this turn .
-     *
+     * set the forfeit of this turn by card .
      * @param card forfeit of this turn .
      */
     public void setForfeit(Card card) {
@@ -54,7 +51,6 @@ public class Repository {
 
     /**
      * set the forfeit for this turn .
-     *
      * @param forfeit forfeit of this turn .
      */
     public void setForfeit(int forfeit) {
