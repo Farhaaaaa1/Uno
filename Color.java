@@ -35,7 +35,7 @@ public class Color {
     public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
 
     // Background
-    public static final String BLACK_BACKGROUND = "\u0033[40m";  // BLACK
+    public static final String BLACK_BACKGROUND = "\033[40m";  // BLACK
     public static final String RED_BACKGROUND = "\033[41m";    // RED
     public static final String GREEN_BACKGROUND = "\033[42m";  // GREEN
     public static final String YELLOW_BACKGROUND = "\033[43m"; // YELLOW

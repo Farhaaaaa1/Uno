@@ -1,28 +1,19 @@
 package com.company;
 
 import static com.company.Color.*;
+import static com.company.Color.RESET;
 
-public class Main {
-
-    public static void main(String[] args) {
-
-        // Printing.printChangeColor();
-        upperSide2(10);
-        edge2(10);
-        upperSide2(10);
-
-    }
-
+public class Test {
     public static void upperSide2(int n) {
         int color;
         boolean flag = true;
         System.out.print("\t\t ");
         for (int i = 0; i < n; ++i) {
             color = (i + 14) % 4 + 1;
-            System.out.print(CYAN_BACKGROUND + "\t      " + RESET);
+            System.out.print(BLUE_BACKGROUND + "\t      " + RESET);
             if (i + 1 == n && flag) {
                 flag = false;
-                System.out.print(CYAN_BACKGROUND + "\t       " + RESET);
+                System.out.print(BLUE_BACKGROUND + "\t       " + RESET);
             } else
                 System.out.print(" ");
         }
@@ -40,10 +31,10 @@ public class Main {
                 if (i == 0) {
                     System.out.print("\t\t ");
 
-                    System.out.print(CYAN_BACKGROUND+"\t" + WHITE_BACKGROUND_BRIGHT + "\t  " + RESET + " ");
+                    System.out.print(BLUE_BACKGROUND+"\t" + BLACK_BACKGROUND_BRIGHT + BLUE_BOLD_BRIGHT  + b+b+b+b+b+b + RESET + " ");
 
                 } else {
-                    System.out.print(CYAN_BACKGROUND+"   "+ WHITE_BACKGROUND_BRIGHT+PURPLE_BOLD_BRIGHT  + b+b+b+b + RESET);
+                    System.out.print(BLUE_BACKGROUND+"   "+ BLACK_BACKGROUND_BRIGHT+BLUE_BOLD_BRIGHT  + b+b+b+b + RESET);
                     if (i + 1 == n) {
                         lastCardEdge2(color);
                     } else
@@ -54,7 +45,8 @@ public class Main {
         }
     }
     public static void lastCardEdge2(int color) {
-            System.out.print(WHITE_BACKGROUND_BRIGHT + "\t\t" + RESET + CYAN_BACKGROUND + "   " + RESET + " ");
+        int a = 9617 ;
+        char b = (char) a ;
+        System.out.print(BLACK_BACKGROUND_BRIGHT+BLUE_BOLD_BRIGHT + b+b+b+b+b+b + RESET + BLUE_BACKGROUND_BRIGHT + "   " + RESET + " ");
     }
-
 }
