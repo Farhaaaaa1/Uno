@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 public class WildCard extends Card {
     public WildCard(int color, int number) {
-        super(color);
+        super(color, number);
     }
-
 
     public void setTheColor() {
         int color;
@@ -17,7 +16,7 @@ public class WildCard extends Card {
             color = Input.nextInt();
             if(color < 0 || color > 5)
                 System.out.println("out of range try again ... ");
-        } while (color > 0 && color < 5);
+        } while (color < 0 && color > 5);
         super.setColor(color);
     }
 }

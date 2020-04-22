@@ -19,8 +19,8 @@ public class Repository {
 //        this.playedCardList = playedCardList;
 //    }
 
-    public Repository(LinkedList<Card> playedCardList) {
-        this.playedCardList = playedCardList;
+    public Repository() {
+
     }
 
     /**
@@ -45,7 +45,7 @@ public class Repository {
     public void setForfeit(Card card) {
         if (this.forfeit == 1)
             this.forfeit = card.getForfeit();
-        if (this.forfeit > 1)
+       else if (this.forfeit > 1)
             this.forfeit += card.getForfeit();
     }
 

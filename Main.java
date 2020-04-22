@@ -1,60 +1,105 @@
 package com.company;
 
+import java.util.Collections;
+import java.util.LinkedList;
+
 import static com.company.Color.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        int turn;
+        Printing printer = new Printing();
+        LinkedList<Card> list = new LinkedList<>();
+        GameSystem uno = new GameSystem();
+        User me = new User();
+        PcPlayer pc = new PcPlayer();
+        PcPlayer pc1 = new PcPlayer();
+        PcPlayer pc2 = new PcPlayer();
+        boolean access = false;
+        Repository repository = new Repository();
+        uno.fillTheCardsAtFirst(repository);
+        Player[] players = new Player[]{pc, pc1, pc2, me};
+        uno.setNumberOfPlayer(4);
+        for (int i = 0; i < 7; ++i) {
+            Collections.shuffle(repository.playedCardList);
+            me.CardList.add(repository.playedCardList.getFirst());
+            repository.playedCardList.removeFirst();
+            pc.CardList.add(repository.playedCardList.getFirst());
+            repository.playedCardList.removeFirst();
 
-        // Printing.printChangeColor();
-        upperSide2(10);
-        edge2(10);
-        upperSide2(10);
+            pc1.CardList.add(repository.playedCardList.getFirst());
+            repository.playedCardList.removeFirst();
 
-    }
-
-    public static void upperSide2(int n) {
-        int color;
-        boolean flag = true;
-        System.out.print("\t\t ");
-        for (int i = 0; i < n; ++i) {
-            color = (i + 14) % 4 + 1;
-            System.out.print(CYAN_BACKGROUND + "\t      " + RESET);
-            if (i + 1 == n && flag) {
-                flag = false;
-                System.out.print(CYAN_BACKGROUND + "\t       " + RESET);
-            } else
-                System.out.print(" ");
+            pc2.CardList.add(repository.playedCardList.getFirst());
+            repository.playedCardList.removeFirst();
         }
-        System.out.println();
+        repository.setForfeit(1);
+        while (repository.playedCardList.getLast().getNumber() > 9)
+            Collections.shuffle(repository.playedCardList);
+        int i = 0;
+        printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
 
-    }
-    public static void edge2(int n) {
-        boolean flag = true;
-        int a = 9617 ;
-        char b = (char) a ;
-        int height = 5;
-        for (int j = 0; j < height; ++j) {
-            for (int i = 0; i < n; ++i) {
-                int color = (i + 14) % 4 + 1;
-                if (i == 0) {
-                    System.out.print("\t\t ");
+        while (true) {
+            System.out.println("forfeit : " + repository.getForfeit());
+            turn = uno.realBaghiMande(uno.getTurn());
+            System.out.println();
+            System.out.println("   turn   : " + turn);
+            uno.setTurn(turn);
 
-                    System.out.print(CYAN_BACKGROUND+"\t" + WHITE_BACKGROUND_BRIGHT + "\t  " + RESET + " ");
 
+            if (players[turn] instanceof User) {
+                access = false;
+                if (((User) players[turn]).playIsValid(repository)) {
+                    printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                    ((User) players[turn]).putCard(repository, uno);
+                    //Thread.sleep(6000);
+                    uno.setTurn(uno.getTurn() + uno.getRotation());
                 } else {
-                    System.out.print(CYAN_BACKGROUND+"   "+ WHITE_BACKGROUND_BRIGHT+PURPLE_BOLD_BRIGHT  + b+b+b+b + RESET);
-                    if (i + 1 == n) {
-                        lastCardEdge2(color);
+                    printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                    Thread.sleep(3000);
+                    if (repository.getForfeit() == 1)
+                        access = true;
+                    else
+                        uno.setTurn(uno.getTurn() + uno.getRotation());
+                    ((User) players[turn]).getCard(repository);
+
+                    if (((User) players[turn]).playIsValid(repository) && access) {
+                        printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                        Thread.sleep(6000);
+                        ((User) players[turn]).putCard(repository, uno);
+                        uno.setTurn(uno.getTurn() + uno.getRotation());
+                        Thread.sleep(6000);
+                    }
+                }
+            }
+
+            if (players[turn] instanceof PcPlayer) {
+                access = false;
+                if (players[turn].playIsValid(repository)) {
+                    printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                    ((PcPlayer) players[turn]).puttingAutomatic(repository, uno);
+                    uno.setTurn(uno.getTurn() + uno.getRotation());
+                    Thread.sleep(6000);
+                } else {
+                    if (repository.getForfeit() == 1)
+                        access = true;
+                    printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                    Thread.sleep(6000);
+                    ((PcPlayer) players[turn]).getCard(repository);
+
+                    if (((PcPlayer) players[turn]).playIsValid(repository) && access) {
+                        printer.playWithFour(players[0], players[3], players[2], players[1], repository, uno);
+                        Thread.sleep(6000);
+                        ((PcPlayer) players[turn]).puttingAutomatic(repository, uno);
+                        uno.setTurn(uno.getTurn() + uno.getRotation());
                     } else
-                        System.out.print(" ");
+                        uno.setTurn(uno.getTurn() + uno.getRotation());
                 }
             }
             System.out.println();
         }
     }
-    public static void lastCardEdge2(int color) {
-            System.out.print(WHITE_BACKGROUND_BRIGHT + "\t\t" + RESET + CYAN_BACKGROUND + "   " + RESET + " ");
-    }
+
 
 }

@@ -7,8 +7,8 @@ package com.company;
  */
 public abstract class Card {
     private int color;
-    protected int forfeit = 0 ;
-
+    protected int forfeit = 1 ;
+    private int number ;
     /**
      * @return color of the card
      */
@@ -34,8 +34,9 @@ public abstract class Card {
         this.forfeit = forfeit;
     }
 
-    public Card(int color) {
+    public Card(int color,int number) {
         this.color = color;
+        this.number = number;
     }
 
     /**
@@ -43,5 +44,21 @@ public abstract class Card {
      */
     void setColor(int color) {
         this.color = color ;
+    }
+
+    /**
+     * get card number
+     * @return card number
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /**
+     * set the cards number
+     * @param number
+     */
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

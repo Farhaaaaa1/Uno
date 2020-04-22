@@ -1,10 +1,16 @@
 package com.company;
 
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 public class User extends Player {
-
+    /**
+     * how every human have to get cards
+     *
+     * @param repository repository that keep the cards
+     * @param game       game system
+     */
     @Override
     void playing(Repository repository, GameSystem game) {
         boolean access = false;
@@ -15,6 +21,7 @@ public class User extends Player {
                 access = true;
             getCard(repository);
         }
+
         if (playIsValid(repository) && access)
             putCard(repository, game);
     }
@@ -22,13 +29,16 @@ public class User extends Player {
     @Override
     void getCard(Repository repository) {
         int numberOfCard = repository.getForfeit();
+        int givenCard;
         for (int i = 0; i < numberOfCard; ++i) {
             Card temp = repository.playedCardList.getLast();
             repository.playedCardList.removeLast();
-            Collections.shuffle(repository.playedCardList);
+            givenCard = new Random().nextInt(repository.playedCardList.size());
             repository.playedCardList.addLast(temp);
-            this.CardList.add(repository.playedCardList.getFirst());
-            repository.playedCardList.removeFirst();
+            if(repository.playedCardList.get(givenCard) instanceof WildCard)
+                repository.playedCardList.get(givenCard).setColor(5);
+            this.CardList.add(repository.playedCardList.get(givenCard));
+            repository.playedCardList.remove(givenCard);
         }
         repository.setForfeit(1);
     }
@@ -44,27 +54,24 @@ public class User extends Player {
             n--;
             if (n < CardList.size() && n >= 0) {
                 if (repository.getForfeit() == 1) {
-                    if (CardList.get(n) instanceof ColorCard) {
-                        if (CardList.get(n).getColor() == repository.playedCardList.getLast().getColor()) {
-                            afterPut(repository, game, n);
-                            break;
-                        } else if (repository.playedCardList.getLast() instanceof ColorCard) {
-                            if (((ColorCard) CardList.get(n)).getNumber() == ((ColorCard) repository.playedCardList.getLast()).getNumber()) {
-                                afterPut(repository, game, n);
-                                break;
-                            }
-                        }
-                    } else if (CardList.get(n) instanceof WildCard && !(CardList.get(n) instanceof WildDrawCard)) {
+                    if ((CardList.get(n).getColor() == repository.playedCardList.getLast().getColor()) &&
+                            !(CardList.get(n) instanceof WildDrawCard)) {
                         afterPut(repository, game, n);
                         break;
-                    } else if (CardList.get(n) instanceof WildCard && (CardList.get(n) instanceof WildDrawCard)) {
+                    }
+                    if ((CardList.get(n).getNumber() == repository.playedCardList.getLast().getNumber() ||
+                            CardList.get(n).getNumber() == 13) && !(CardList.get(n) instanceof WildDrawCard)) {
+                        afterPut(repository, game, n);
+                        break;
+                    }
+
+                    if (CardList.get(n) instanceof WildCard && (CardList.get(n) instanceof WildDrawCard)) {
                         if (isWildsDrawValid(repository)) {
                             afterPut(repository, game, n);
                             break;
                         }
                         System.out.println("\n\n\n\u001b[34m   you have to choose another card (if you have color card or wild card you have to put it first)  try again : \u001b[0m");
                     }
-                    else
                         System.out.println("\n\n\n\u001b[34m   you have to choose another card try again : \u001b[0m");
                 }
                 if (repository.getForfeit() > 1) {
@@ -82,8 +89,7 @@ public class User extends Player {
                         if (CardList.get(n) instanceof WildDrawCard) {
                             afterPut(repository, game, n);
                             break;
-                        }
-                        else
+                        } else
                             System.out.println("you cant put this , try again : ");
                     }
                 }
@@ -94,31 +100,30 @@ public class User extends Player {
 
     }
 
-    public boolean isWildsDrawValid(Repository rep) {
-        for (Card A :
-                CardList) {
-            if (A instanceof ColorCard) {
-                if (A.getColor() == rep.playedCardList.getLast().getColor())
-                    return false;
-                if (rep.playedCardList.getLast() instanceof ColorCard)
-                    if (((ColorCard) A).getNumber() == ((ColorCard) rep.playedCardList.getLast()).getNumber())
-                        return false;
 
-            }
-            if (A instanceof WildCard && !(A instanceof WildDrawCard))
-                return false;
-        }
-        return true;
-    }
-
+    /**
+     * do what happen after putting the card
+     * @param repository keep all the cards
+     * @param gameSystem system of game LOL
+     * @param n index of Card list
+     */
     public void afterPut(Repository repository, GameSystem gameSystem, int n) {
+        // for draw and wild draw
         repository.addToPlayedCard(CardList.get(n));
+        // to setting the color
         if (CardList.get(n) instanceof WildCard)
             ((WildCard) CardList.get(n)).setTheColor();
+        // to skip or rivers
         actions(CardList.get(n), gameSystem, n);
         CardList.remove(n);
     }
 
+    /**
+     * show what happen after putting the card
+     * @param card card that do sth
+     * @param gameSystem system of game LOL
+     * @param n index of Card list
+     */
     public void actions(Card card, GameSystem gameSystem, int n) {
         if (card instanceof SkipCard)
             ((SkipCard) card).skip(gameSystem);
