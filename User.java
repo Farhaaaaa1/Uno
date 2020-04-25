@@ -5,44 +5,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class User extends Player {
+    public User(String name) {
+        super(name);
+    }
+
     /**
-     * how every human have to get cards
-     *
-     * @param repository repository that keep the cards
-     * @param game       game system
+     * put the cards automaticly
+     * @param repository
+     * @param game
      */
-    @Override
-    void playing(Repository repository, GameSystem game) {
-        boolean access = false;
-        if (playIsValid(repository))
-            putCard(repository, game);
-        else {
-            if (repository.getForfeit() == 1)
-                access = true;
-            getCard(repository);
-        }
-
-        if (playIsValid(repository) && access)
-            putCard(repository, game);
-    }
-
-    @Override
-    void getCard(Repository repository) {
-        int numberOfCard = repository.getForfeit();
-        int givenCard;
-        for (int i = 0; i < numberOfCard; ++i) {
-            Card temp = repository.playedCardList.getLast();
-            repository.playedCardList.removeLast();
-            givenCard = new Random().nextInt(repository.playedCardList.size());
-            repository.playedCardList.addLast(temp);
-            if(repository.playedCardList.get(givenCard) instanceof WildCard)
-                repository.playedCardList.get(givenCard).setColor(5);
-            this.CardList.add(repository.playedCardList.get(givenCard));
-            repository.playedCardList.remove(givenCard);
-        }
-        repository.setForfeit(1);
-    }
-
     public void putCard(Repository repository, GameSystem game) {
         int n;
         System.out.println("Choose your card : ");
@@ -131,4 +102,6 @@ public class User extends Player {
             ((ReversCard) card).rivers(gameSystem);
 
     }
+
+
 }

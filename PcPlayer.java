@@ -3,38 +3,15 @@ package com.company;
 import java.util.Random;
 
 public class PcPlayer extends Player {
-
-    @Override
-    void getCard(Repository repository) {
-        int numberOfCard = repository.getForfeit();
-        int givenCard;
-        for (int i = 0; i < numberOfCard; ++i) {
-            Card temp = repository.playedCardList.getLast();
-            repository.playedCardList.removeLast();
-            givenCard = new Random().nextInt(repository.playedCardList.size());
-            if(repository.playedCardList.get(givenCard) instanceof WildCard)
-                repository.playedCardList.get(givenCard).setColor(5);
-            repository.playedCardList.addLast(temp);
-            this.CardList.add(repository.playedCardList.get(givenCard));
-            repository.playedCardList.remove(givenCard);
-        }
-        repository.setForfeit(1);
+    public PcPlayer(String name) {
+        super(name);
     }
 
-    @Override
-    void playing(Repository repository, GameSystem game) {
-        boolean access = false;
-        if (playIsValid(repository))
-            puttingAutomatic(repository, game);
-        else {
-            if (repository.getForfeit() == 1)
-                access = true;
-            getCard(repository);
-        }
-        if (playIsValid(repository) && access)
-            puttingAutomatic(repository, game);
-    }
-
+    /**
+     * put the cards automatically
+     * @param repository where we keep played cards
+     * @param gameSystem system of the game LOL
+     */
     public void puttingAutomatic(Repository repository, GameSystem gameSystem ) {
         for (Card A :
                 CardList) {

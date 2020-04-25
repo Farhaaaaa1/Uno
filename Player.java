@@ -1,20 +1,36 @@
 package com.company;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public abstract class Player {
     LinkedList<Card> CardList = new LinkedList();
+    public String name ;
+
+    public Player(String name) {
+        this.name = name;
+    }
 
     /**
      * @param repository repository that keep the cards
      */
-    abstract void getCard(Repository repository);
+    public void getCard(Repository repository) {
 
-    /**
-     * @param repository repository that keep the cards
-     * @param game       game system
-     */
-    abstract void playing(Repository repository, GameSystem game);
+        int numberOfCard = repository.getForfeit();
+        int givenCard;
+        for (int i = 0; i < numberOfCard; ++i) {
+            Card temp = repository.playedCardList.getLast();
+            repository.playedCardList.removeLast();
+            givenCard = new Random().nextInt(repository.playedCardList.size());
+            repository.playedCardList.addLast(temp);
+            if (repository.playedCardList.get(givenCard) instanceof WildCard)
+                repository.playedCardList.get(givenCard).setColor(5);
+            this.CardList.add(repository.playedCardList.get(givenCard));
+            repository.playedCardList.remove(givenCard);
+        }
+        repository.setForfeit(1);
+    }
+
 
     /**
      * check player can put any card or not .
@@ -61,24 +77,22 @@ public abstract class Player {
         for (Card card :
                 CardList) {
             if (card.getColor() == repository.playedCardList.getLast().getColor()) {
-                System.out.println(1.);
                 System.out.println(repository.playedCardList.getLast().getColor());
                 System.out.println(card.getNumber());
                 return true;
             }
-            if (repository.playedCardList.getLast().getNumber() == card.getNumber())
-            {                System.out.println(2.);
+            if (repository.playedCardList.getLast().getNumber() == card.getNumber()) {
 
                 return true;
             }
             if (card instanceof WildCard) {
-                System.out.println(3.);
                 return true;
             }
         }
         return false;
 
     }
+
     public boolean isWildsDrawValid(Repository rep) {
         for (Card A :
                 CardList)
@@ -89,6 +103,23 @@ public abstract class Player {
                     return false;
             }
         return true;
+    }
+    /**
+     *
+     * @return score of every player
+     */
+    public int getScore()
+    {   int score = 0 ;
+        for (Card card:
+                this.CardList ) {
+            if(card.getNumber()<10)
+                score+=card.getNumber();
+            else if(card.getNumber()>9 && card instanceof ColorCard)
+                score+=20 ;
+            else if (card instanceof WildCard)
+                score+=50 ;
+        }
+        return score ;
     }
 
 }
